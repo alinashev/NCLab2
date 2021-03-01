@@ -1,5 +1,6 @@
 package com.example.lab2.controller.datacontrollers;
 
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 
 import java.io.BufferedReader;
@@ -13,7 +14,9 @@ import java.util.concurrent.Future;
 public class DataPullerGov extends DataPuller{
 
     @Override
+    @Async
     public Future<String> getData(String date) {
+        System.out.println("gov");
         sb = new StringBuilder();
         try {
             url = new URL("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date="

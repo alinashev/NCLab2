@@ -13,7 +13,7 @@ class GetXmlTest {
 	@Test
 	void getXml() {
 		//Assertions.assertEquals("AZN", parserXml.shoutXML(dataPuller.getData()));
-		parserXml.parseXML(dataPuller.getData("20210220"));
+		//parserXml.parseXML(dataPuller.getData("20210220"));
 		Assertions.assertEquals("32.3000000", parserXml.currentRate("CHF"));
 		Assertions.assertEquals(7,parserXml.amountOfCurrencies());
 	}

@@ -1,5 +1,6 @@
 package com.example.lab2.model.entities;
 
+import org.json.JSONObject;
 import org.json.XML;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -67,5 +68,13 @@ public class ParserXml {
             parserXml = new ParserXml();
         }
         return parserXml;
+    }
+    public String buildXmlString(String name){
+        StringBuilder sb =  new StringBuilder();
+        sb.append("<currency ")
+                .append("name=\"").append(name).append("\" ")
+                .append("rate=\"").append(currentRate(name)).append("\" ")
+                .append("/>");
+        return sb.toString();
     }
 }

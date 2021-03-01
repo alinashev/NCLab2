@@ -28,12 +28,14 @@ public class ParserJSON {
     }
 
     public String currentRate(String name){
-        if(listNameCurrency.size() > 0) return array.getJSONObject(listNameCurrency.indexOf(name)).getString("rate");
+        if(listNameCurrency.size() > 0)
+            return String.valueOf(array.getJSONObject(listNameCurrency.indexOf(name)).getDouble("rate"));
         else return "Not exists";
     }
 
     public String currentData(String name){
-        if(listNameCurrency.size() > 0) return array.getJSONObject(listNameCurrency.indexOf(name)).getString("exchangedate");
+        if(listNameCurrency.size() > 0)
+            return array.getJSONObject(listNameCurrency.indexOf(name)).getString("exchangedate");
         else return "Not exists";
     }
 

@@ -15,7 +15,7 @@ class GetJsonTest {
 	private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
 	@Test
 	void getJSON() {
-		parserJSON.initializeList(dataPuller.getData());
+		//parserJSON.initializeList(dataPuller.getData());
 		parserJSON.initListNameCurrency();
 		Assertions.assertEquals(61, parserJSON.amountOfCurrencies());
 		Assertions.assertEquals("10.4129",parserJSON.currentRate("TND"));

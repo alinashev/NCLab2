@@ -4,6 +4,7 @@ import com.example.lab2.controller.datacontrollers.DataPuller;
 import com.example.lab2.controller.datacontrollers.DataPullerGov;
 import com.example.lab2.controller.datacontrollers.DataPullerMono;
 import com.example.lab2.controller.datacontrollers.DataPullerPB;
+import com.example.lab2.model.entities.ParserJSON;
 import com.example.lab2.model.entities.ParserXml;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +33,15 @@ public class ControllerAPI {
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
-            model.addAttribute("data", ParserXml.parserXml().currentRate(name));
+            model.addAttribute("data", ParserXml.parserXml().buildXmlString(name));
+        }else {
+            try {
+                ParserJSON.parserJSON().initializeList(dataPullerGov.getData("date").get());
+                ParserJSON.parserJSON().initListNameCurrency();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+            model.addAttribute("data", ParserJSON.parserJSON().buildJSONString(name));
         }
         return "result";
     }
