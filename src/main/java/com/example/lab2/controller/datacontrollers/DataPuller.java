@@ -1,5 +1,6 @@
 package com.example.lab2.controller.datacontrollers;
 
+import com.example.lab2.model.converters.DateConverter;
 import org.springframework.scheduling.annotation.Async;
 
 import java.io.BufferedReader;
@@ -14,7 +15,7 @@ public abstract class DataPuller {
     protected BufferedReader in;
     protected String inputLine;
     protected StringBuilder sb;
+    protected DateConverter dateConverter = new DateConverter();
 
-    @Async
-    public abstract Future<String> getData(String date);
+    public abstract String getData(String date);
 }

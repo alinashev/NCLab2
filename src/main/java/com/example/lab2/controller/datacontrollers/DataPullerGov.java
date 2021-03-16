@@ -14,13 +14,11 @@ import java.util.concurrent.Future;
 public class DataPullerGov extends DataPuller{
 
     @Override
-    @Async
-    public Future<String> getData(String date) {
-        System.out.println("gov");
+    public String getData(String date) {
         sb = new StringBuilder();
         try {
             url = new URL("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date="
-                    + new SimpleDateFormat("yyyyMMdd").format(new Date()) + "&amp;json");
+                    + dateConverter.convertForGov(date) + "&amp;json");
             yc = url.openConnection();
             in = new BufferedReader(
                     new InputStreamReader(
@@ -31,6 +29,6 @@ public class DataPullerGov extends DataPuller{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new AsyncResult<String>(sb.toString());
+        return sb.toString();
     }
 }

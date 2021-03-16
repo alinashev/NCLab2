@@ -1,7 +1,5 @@
-package com.example.lab2.model.entities;
+package com.example.lab2.model.parsers;
 
-import org.json.JSONObject;
-import org.json.XML;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -18,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ParserXml {
+public class ParserXml extends BaseParser{
     private static ParserXml parserXml;
 
     List<Element> elementList = new ArrayList<>();
@@ -47,10 +45,7 @@ public class ParserXml {
         }
     }
 
-    public int amountOfCurrencies(){
-        return elementList.size();
-    }
-
+    @Override
     public String currentRate(String name){
         AtomicReference<String> saleRate = new AtomicReference<>("");
         elementList.forEach(element -> {
@@ -60,6 +55,7 @@ public class ParserXml {
                 }
             }
         });
+        System.out.println(saleRate.get());
         return saleRate.get();
     }
 
@@ -68,13 +64,5 @@ public class ParserXml {
             parserXml = new ParserXml();
         }
         return parserXml;
-    }
-    public String buildXmlString(String name){
-        StringBuilder sb =  new StringBuilder();
-        sb.append("<currency ")
-                .append("name=\"").append(name).append("\" ")
-                .append("rate=\"").append(currentRate(name)).append("\" ")
-                .append("/>");
-        return sb.toString();
     }
 }

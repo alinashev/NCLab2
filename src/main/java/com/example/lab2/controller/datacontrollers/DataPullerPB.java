@@ -14,13 +14,11 @@ import java.util.concurrent.Future;
 public class DataPullerPB extends DataPuller{
 
     @Override
-    @Async
-    public Future<String> getData(String date) {
-        System.out.println("pb");
+    public String getData(String date) {
         sb = new StringBuilder();
         try {
             url = new URL("https://api.privatbank.ua/p24api/exchange_rates?xml&date="
-                    + new SimpleDateFormat("dd.MM.yyyy").format(new Date()));
+                    + dateConverter.convertForPb(date));
             yc = url.openConnection();
             in = new BufferedReader(
                     new InputStreamReader(
@@ -31,6 +29,6 @@ public class DataPullerPB extends DataPuller{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new AsyncResult<String>(sb.toString());
+        return sb.toString();
     }
 }
