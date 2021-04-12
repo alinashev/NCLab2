@@ -1,4 +1,4 @@
-import com.example.lab2.controller.datacontrollers.DataPullerMono;
+import com.example.lab2.model.pullers.DataPullerMono;
 import com.example.lab2.model.parsers.ParserByJackson;
 import org.junit.jupiter.api.Test;
 

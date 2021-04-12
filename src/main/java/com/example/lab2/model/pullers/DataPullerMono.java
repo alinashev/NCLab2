@@ -1,24 +1,17 @@
-package com.example.lab2.controller.datacontrollers;
-
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
+package com.example.lab2.model.pullers;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.concurrent.Future;
 
-public class DataPullerGov extends DataPuller{
+public class DataPullerMono extends DataPuller {
 
     @Override
     public String getData(String date) {
         sb = new StringBuilder();
         try {
-            url = new URL("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date="
-                    + dateConverter.convertForGov(date) + "&amp;json");
+            url = new URL("https://api.monobank.ua/bank/currency");
             yc = url.openConnection();
             in = new BufferedReader(
                     new InputStreamReader(

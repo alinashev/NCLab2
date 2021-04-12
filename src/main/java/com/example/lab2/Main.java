@@ -13,7 +13,7 @@ import java.util.concurrent.Executor;
 
 @SpringBootApplication
 @EnableAsync
-@ComponentScan("com.example.lab2.controller")
+@ComponentScan({"com.example.lab2.controller", "com.example.lab2.model.pullers"})
 public class Main {
 	public static void main(String[] args) {
 		SpringApplication.run(Main.class, args);

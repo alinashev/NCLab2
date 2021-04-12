@@ -1,23 +1,20 @@
 package com.example.lab2.controller;
 
-import com.example.lab2.controller.datacontrollers.*;
 import com.example.lab2.model.entities.pojo.EntityJSON;
 import com.example.lab2.model.parsers.ParserByJackson;
 import com.example.lab2.model.parsers.ParserByOrgJSON;
 import com.example.lab2.model.entities.pojo.EntityXML;
 import com.example.lab2.model.parsers.ParserXml;
 import com.example.lab2.model.exception.TimeOutException;
+import com.example.lab2.model.pullers.AsyncRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;

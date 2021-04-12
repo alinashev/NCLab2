@@ -1,4 +1,4 @@
-package com.example.lab2.controller.datacontrollers;
+package com.example.lab2.model.pullers;
 
 import com.example.lab2.model.converters.DateConverter;
 import org.springframework.scheduling.annotation.Async;

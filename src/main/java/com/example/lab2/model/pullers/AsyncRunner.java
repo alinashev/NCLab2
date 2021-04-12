@@ -1,4 +1,4 @@
-package com.example.lab2.controller.datacontrollers;
+package com.example.lab2.model.pullers;
 
 import org.springframework.context.annotation.Configuration;
 

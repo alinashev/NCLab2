@@ -5,5 +5,5 @@
     <bean id="xml" class="com.example.lab2.model.entities.pojo.EntityXML"/>
     <bean id="json" class="com.example.lab2.model.entities.pojo.EntityJSON"/>
     <bean id="writer" class="com.example.lab2.controller.Writer"/>
-    <bean id="async" class="com.example.lab2.controller.datacontrollers.AsyncRunner"/>
+    <bean id="async" class="com.example.lab2.model.pullers.AsyncRunner"/>
 </beans>
