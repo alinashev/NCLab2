@@ -1,8 +1,11 @@
 package com.example.lab2.controller.datacontrollers;
 
+import org.springframework.context.annotation.Configuration;
+
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+@Configuration
 public class AsyncRunner {
     private String resultGov;
     private String resultPB;

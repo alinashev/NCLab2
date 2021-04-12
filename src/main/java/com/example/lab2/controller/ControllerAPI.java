@@ -7,6 +7,9 @@ import com.example.lab2.model.parsers.ParserByOrgJSON;
 import com.example.lab2.model.entities.pojo.EntityXML;
 import com.example.lab2.model.parsers.ParserXml;
 import com.example.lab2.model.exception.TimeOutException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,10 +25,15 @@ import java.util.Locale;
 @Controller
 public class ControllerAPI {
 
-    private Writer writer = new Writer();
-    private AsyncRunner asyncRunner = new AsyncRunner();
+    @Autowired
+    private Writer writer;
+    @Autowired
+    private AsyncRunner asyncRunner;
+
     private Calendar calendar = Calendar.getInstance();
     private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+    private ApplicationContext appContext  = new ClassPathXmlApplicationContext("beans.xml");
 
     @GetMapping("/api")
     public @ResponseBody Object getData(@RequestParam(value = "currency", defaultValue = "USD") String name,
@@ -34,7 +42,7 @@ public class ControllerAPI {
         type = type.toLowerCase(Locale.ROOT);
         asyncRunner.executeAll(date);
         if(type.equals("xml")){
-            EntityXML entityXML = new EntityXML();
+            EntityXML entityXML = (EntityXML) appContext.getBean("xml");
             try{
                 Thread.sleep(1000);
                 if(asyncRunner.getResultPB() == null || asyncRunner.getResultGov() == null){
@@ -59,7 +67,7 @@ public class ControllerAPI {
             writer.writeData(date,name,entityXML);
             return entityXML;
         }else {
-            EntityJSON entityJSON = new EntityJSON();
+            EntityJSON entityJSON = (EntityJSON) appContext.getBean("json");
             try{
                 Thread.sleep(1000);
                 if(asyncRunner.getResultPB() == null

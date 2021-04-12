@@ -1,5 +1,7 @@
 package com.example.lab2.model.entities.pojo;
 
+import com.example.lab2.model.entities.interfaces.Injection;
+
 import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -9,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.StringWriter;
 
 @XmlRootElement(name="currency")
-public class EntityXML extends Base {
+public class EntityXML extends Base implements Injection {
     @XmlElement
     public void setName(String name) {
         this.name = name;

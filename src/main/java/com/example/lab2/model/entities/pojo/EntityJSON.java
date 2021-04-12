@@ -1,8 +1,9 @@
 package com.example.lab2.model.entities.pojo;
 
+import com.example.lab2.model.entities.interfaces.Injection;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-public class EntityJSON extends Base{
+public class EntityJSON extends Base implements Injection {
 
     public void setName(String name) {
         this.name = name;
