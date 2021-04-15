@@ -41,4 +41,28 @@ public class EntityJSON extends Base implements Injection {
         }
         return null;
     }
+
+    @Override
+    public int hashCode() {
+        int x = 17;
+        x = 31 * x + name.hashCode();
+        x = 31 * x + currencyPBRate.hashCode();
+        x = 31 * x + currensyMonoRate.hashCode();
+        x = 31 * x + currencyGovRate.hashCode();
+        return x;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == this) return true;
+        if(obj == null) return false;
+        if(!(obj instanceof EntityJSON)) return false;
+
+        EntityJSON entityJSON = (EntityJSON)obj;
+        if(this.name == entityJSON.name
+                && this.currencyGovRate == entityJSON.currencyGovRate
+                && this.currencyPBRate == entityJSON.currencyPBRate
+                && this.currensyMonoRate == entityJSON.currensyMonoRate) return true;
+        else return false;
+    }
 }

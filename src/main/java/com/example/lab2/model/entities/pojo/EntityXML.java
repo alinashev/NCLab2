@@ -56,4 +56,28 @@ public class EntityXML extends Base implements Injection {
         }
         return sw.toString();
     }
+
+    @Override
+    public int hashCode() {
+        int x = 17;
+        x = 31 * x + name.hashCode();
+        x = 31 * x + currencyPBRate.hashCode();
+        x = 31 * x + currensyMonoRate.hashCode();
+        x = 31 * x + currencyGovRate.hashCode();
+        return x;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == this) return true;
+        if(obj == null) return false;
+        if(!(obj instanceof EntityXML)) return false;
+
+        EntityXML entityXML = (EntityXML)obj;
+        if(this.name == entityXML.name
+                && this.currencyGovRate == entityXML.currencyGovRate
+                && this.currencyPBRate == entityXML.currencyPBRate
+                && this.currensyMonoRate == entityXML.currensyMonoRate) return true;
+        else return false;
+    }
 }
