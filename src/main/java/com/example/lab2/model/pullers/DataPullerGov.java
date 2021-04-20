@@ -1,11 +1,15 @@
 package com.example.lab2.model.pullers;
 
+import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
 public class DataPullerGov extends DataPuller{
+
+    private final static Logger logger = Logger.getLogger(DataPullerGov.class);
 
     @Override
     public String getData(String date) {
@@ -21,7 +25,7 @@ public class DataPullerGov extends DataPuller{
                 sb.append(inputLine);
             in.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         return sb.toString();
     }

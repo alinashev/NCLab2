@@ -2,8 +2,11 @@ package com.example.lab2.model.entities.pojo;
 
 import com.example.lab2.model.entities.interfaces.Injection;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.apache.log4j.Logger;
 
 public class EntityJSON extends Base implements Injection {
+
+    private final static Logger logger = Logger.getLogger(EntityJSON.class);
 
     public void setName(String name) {
         this.name = name;
@@ -37,7 +40,7 @@ public class EntityJSON extends Base implements Injection {
         try {
             return mapper.writeValueAsString(this);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         return null;
     }

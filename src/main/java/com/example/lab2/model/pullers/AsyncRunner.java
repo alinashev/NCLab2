@@ -1,5 +1,6 @@
 package com.example.lab2.model.pullers;
 
+import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.CompletableFuture;
@@ -15,6 +16,8 @@ public class AsyncRunner {
     private DataPuller dataPullerMono = new DataPullerMono();
     private DataPuller dataPullerGov = new DataPullerGov();
 
+    private final static Logger logger = Logger.getLogger(AsyncRunner.class);
+
     public void executeAll(String date){
         CompletableFuture<String> gov = CompletableFuture.supplyAsync(()-> dataPullerGov.getData(date));
         CompletableFuture<String> pb = CompletableFuture.supplyAsync(()-> dataPullerPB.getData(date));
@@ -26,7 +29,7 @@ public class AsyncRunner {
                 resultPB = pb.get();
                 resultMono = mono.get();
             } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
+                logger.error(e);
             }
         });
     }

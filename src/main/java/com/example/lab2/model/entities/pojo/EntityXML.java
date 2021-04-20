@@ -1,6 +1,7 @@
 package com.example.lab2.model.entities.pojo;
 
 import com.example.lab2.model.entities.interfaces.Injection;
+import org.apache.log4j.Logger;
 
 import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
@@ -12,6 +13,8 @@ import java.io.StringWriter;
 
 @XmlRootElement(name="currency")
 public class EntityXML extends Base implements Injection {
+    private final static Logger logger = Logger.getLogger(EntityXML.class);
+
     @XmlElement
     public void setName(String name) {
         this.name = name;
@@ -52,7 +55,7 @@ public class EntityXML extends Base implements Injection {
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
             jaxbMarshaller.marshal(this, sw);
         } catch (JAXBException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         return sw.toString();
     }

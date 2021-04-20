@@ -1,5 +1,6 @@
 package com.example.lab2.model;
 
+import org.apache.log4j.Logger;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -7,12 +8,15 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import java.io.*;
 
 public class WordModel {
-    FileOutputStream fos;
-    XWPFDocument document = new XWPFDocument();
+    private FileOutputStream fos;
+    private XWPFDocument document = new XWPFDocument();
+
+    private final static Logger logger = Logger.getLogger(WordModel.class);
+
 
     public WordModel(String date,String name){
         try {
-            fos = new FileOutputStream(new File( date + "_" + name + ".docx"));
+            fos = new FileOutputStream( date + "_" + name + ".docx");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -25,7 +29,7 @@ public class WordModel {
             document.write(fos);
             fos.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
     }
 }

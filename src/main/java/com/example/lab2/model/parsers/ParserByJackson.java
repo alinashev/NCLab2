@@ -1,8 +1,8 @@
 package com.example.lab2.model.parsers;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.Currency;
@@ -13,11 +13,13 @@ public class ParserByJackson extends BaseParser {
     private ObjectMapper mapper = new ObjectMapper();
     private List<Monobank> list;
 
+    private final static Logger logger = Logger.getLogger(ParserByJackson.class);
+
     public void parseJSON(String json){
         try {
             list = Arrays.asList(mapper.readValue(json, Monobank[].class));
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
     }
 

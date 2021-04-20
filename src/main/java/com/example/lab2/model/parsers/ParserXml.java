@@ -1,5 +1,6 @@
 package com.example.lab2.model.parsers;
 
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -19,6 +20,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ParserXml extends BaseParser{
     private static ParserXml parserXml;
 
+    private final static Logger logger = Logger.getLogger(ParserXml.class);
+
     List<Element> elementList = new ArrayList<>();
     public void parseXML(String xml){
         try {
@@ -31,7 +34,6 @@ public class ParserXml extends BaseParser{
             for (int temp = 0; temp < nodeList.getLength(); temp++)
             {
                 Node node = nodeList.item(temp);
-                System.out.println("");
                 if (node.getNodeType() == Node.ELEMENT_NODE)
                 {
                     Element eElement = (Element) node;
@@ -41,7 +43,7 @@ public class ParserXml extends BaseParser{
                 }
             }
         } catch (ParserConfigurationException | IOException | SAXException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
     }
 
@@ -55,7 +57,7 @@ public class ParserXml extends BaseParser{
                 }
             }
         });
-        System.out.println(saleRate.get());
+        logger.info(saleRate.get());
         return saleRate.get();
     }
 

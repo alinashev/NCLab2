@@ -7,6 +7,7 @@ import com.example.lab2.model.entities.pojo.EntityXML;
 import com.example.lab2.model.parsers.ParserXml;
 import com.example.lab2.model.exception.TimeOutException;
 import com.example.lab2.model.pullers.AsyncRunner;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -33,6 +34,8 @@ public class ControllerAPI {
 
     private ApplicationContext appContext  = new ClassPathXmlApplicationContext("beans.xml");
 
+    private final static Logger logger = Logger.getLogger(ControllerAPI.class);
+
     @GetMapping("/api")
     public @ResponseBody Object getData(@RequestParam(value = "currency", defaultValue = "USD") String name,
                                         @RequestParam(value = "type", defaultValue = "JSON") String type,
@@ -44,6 +47,7 @@ public class ControllerAPI {
             try{
                 Thread.sleep(1000);
                 if(asyncRunner.getResultPB() == null || asyncRunner.getResultGov() == null){
+                    logger.error("Time out exception. Request time exceeded 1 second.");
                     throw new TimeOutException("Time out exception. Request time exceeded 1 second.");
                 }else
                 {
@@ -60,7 +64,7 @@ public class ControllerAPI {
                     }
                 }
             }catch (InterruptedException | TimeOutException e){
-                System.out.println(e);
+                logger.error(e);
             }
             writer.writeData(date,name,entityXML);
             return entityXML;
@@ -71,6 +75,7 @@ public class ControllerAPI {
                 if(asyncRunner.getResultPB() == null
                         || asyncRunner.getResultGov() == null
                         || asyncRunner.getResultMono() == null){
+                    logger.error("Time out exception. Request time exceeded 1 second.");
                     throw new TimeOutException("Time out exception. Request time exceeded 1 second.");
                 }else {
                     ParserByOrgJSON.parserByOrgJSOn().initializeList(asyncRunner.getResultGov());
@@ -84,7 +89,7 @@ public class ControllerAPI {
                     }
                 }
             }catch (InterruptedException | TimeOutException e){
-                System.out.println(e);
+                logger.error(e);
             }
             writer.writeData(date,name,entityJSON);
             return entityJSON;
