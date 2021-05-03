@@ -1,10 +1,12 @@
 package com.example.lab2.model.parsers;
 
 import org.json.JSONArray;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class ParserByOrgJSON extends BaseParser {
     private static ParserByOrgJSON parserByOrgJSON;
     private JSONArray array;

@@ -3,11 +3,13 @@ package com.example.lab2.model.parsers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Currency;
 import java.util.List;
 
+@Service
 public class ParserByJackson extends BaseParser {
     private static ParserByJackson parserByJackson;
     private ObjectMapper mapper = new ObjectMapper();

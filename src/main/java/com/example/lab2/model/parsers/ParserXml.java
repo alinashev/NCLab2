@@ -1,6 +1,7 @@
 package com.example.lab2.model.parsers;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+@Service
 public class ParserXml extends BaseParser{
     private static ParserXml parserXml;
 

@@ -2,10 +2,12 @@ package com.example.lab2.model.pullers;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+@Service
 @Configuration
 public class AsyncRunner {
     private String resultGov;

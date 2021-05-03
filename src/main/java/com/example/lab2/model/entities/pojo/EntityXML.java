@@ -2,6 +2,7 @@ package com.example.lab2.model.entities.pojo;
 
 import com.example.lab2.model.entities.interfaces.Injection;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
@@ -11,6 +12,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.StringWriter;
 
+@Component
 @XmlRootElement(name="currency")
 public class EntityXML extends Base implements Injection {
     private final static Logger logger = Logger.getLogger(EntityXML.class);

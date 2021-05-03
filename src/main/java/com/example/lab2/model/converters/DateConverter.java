@@ -1,5 +1,8 @@
 package com.example.lab2.model.converters;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class DateConverter {
 
     public String convertForPb(String date){

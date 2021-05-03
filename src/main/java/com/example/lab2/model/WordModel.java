@@ -4,9 +4,11 @@ import org.apache.log4j.Logger;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.springframework.stereotype.Service;
 
 import java.io.*;
 
+@Service
 public class WordModel {
     private FileOutputStream fos;
     private XWPFDocument document = new XWPFDocument();
