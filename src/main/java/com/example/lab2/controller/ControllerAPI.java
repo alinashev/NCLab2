@@ -7,6 +7,7 @@ import com.example.lab2.model.entities.pojo.EntityXML;
 import com.example.lab2.model.parsers.ParserXml;
 import com.example.lab2.model.exception.TimeOutException;
 import com.example.lab2.model.pullers.AsyncRunner;
+import org.apache.commons.compress.utils.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -16,6 +17,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -37,9 +44,10 @@ public class ControllerAPI {
     private final static Logger logger = Logger.getLogger(ControllerAPI.class);
 
     @GetMapping("/api")
-    public @ResponseBody Object getData(@RequestParam(value = "currency", defaultValue = "USD") String name,
+    public @ResponseBody void getData(@RequestParam(value = "currency", defaultValue = "USD") String name,
                                         @RequestParam(value = "type", defaultValue = "JSON") String type,
-                                        @RequestParam(value = "date", defaultValue = "") String date) {
+                                        @RequestParam(value = "date", defaultValue = "") String date,
+                                      HttpServletResponse response) {
         type = type.toLowerCase(Locale.ROOT);
         asyncRunner.executeAll(date);
         if(type.equals("xml")){
@@ -67,7 +75,7 @@ public class ControllerAPI {
                 logger.error(e);
             }
             writer.writeData(date,name,entityXML);
-            return entityXML;
+            responseWithFile(name, date, response);
         }else {
             EntityJSON entityJSON = (EntityJSON) appContext.getBean("json");
             try{
@@ -92,7 +100,19 @@ public class ControllerAPI {
                 logger.error(e);
             }
             writer.writeData(date,name,entityJSON);
-            return entityJSON;
+            responseWithFile(name, date, response);
+        }
+    }
+    private void responseWithFile(String name, String date, HttpServletResponse response){
+        response.setContentType(
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        try {
+            InputStream inputStream = new ByteArrayInputStream(Files.readAllBytes(
+                    Path.of(date.concat("_").concat(name.toUpperCase()).concat(".docx"))));
+            IOUtils.copy(inputStream,response.getOutputStream());
+            response.flushBuffer();
+        } catch (IOException e) {
+            logger.error(e);
         }
     }
 }
