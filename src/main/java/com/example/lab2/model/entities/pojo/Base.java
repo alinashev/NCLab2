@@ -11,5 +11,4 @@ public class Base {
     protected String currencyPBRate;
     protected String currensyMonoRate = "Not reachable";
     protected String currencyGovRate;
-
 }

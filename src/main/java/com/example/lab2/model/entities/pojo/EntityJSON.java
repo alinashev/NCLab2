@@ -38,13 +38,14 @@ public class EntityJSON extends Base implements Injection {
     }
 
     @Override
-    public String toString() {
-        try {
-            return mapper.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            logger.error(e);
-        }
-        return null;
+    public java.lang.String toString() {
+        return "EntityJSON{" +
+                "mapper=" + mapper +
+                ", name='" + name + '\'' +
+                ", currencyPBRate='" + currencyPBRate + '\'' +
+                ", currensyMonoRate='" + currensyMonoRate + '\'' +
+                ", currencyGovRate='" + currencyGovRate + '\'' +
+                '}';
     }
 
     @Override

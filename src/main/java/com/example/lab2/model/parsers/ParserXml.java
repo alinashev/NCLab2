@@ -55,7 +55,7 @@ public class ParserXml extends BaseParser{
         elementList.forEach(element -> {
             if (element.hasAttribute("currency")){
                 if(element.getAttribute("currency").equals(name)){
-                        saleRate.set(element.getAttribute("saleRate"));
+                    saleRate.set(element.getAttribute("saleRate"));
                 }
             }
         });

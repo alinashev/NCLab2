@@ -44,21 +44,20 @@ public class ControllerAPI {
     private final static Logger logger = Logger.getLogger(ControllerAPI.class);
 
     @GetMapping("/api")
-    public @ResponseBody void getData(@RequestParam(value = "currency", defaultValue = "USD") String name,
+    public @ResponseBody Object getData(@RequestParam(value = "currency", defaultValue = "USD") String name,
                                         @RequestParam(value = "type", defaultValue = "JSON") String type,
                                         @RequestParam(value = "date", defaultValue = "") String date,
-                                      HttpServletResponse response) {
+                                        HttpServletResponse response) {
         type = type.toLowerCase(Locale.ROOT);
         asyncRunner.executeAll(date);
-        if(type.equals("xml")){
+        if (type.equals("xml")) {
             EntityXML entityXML = (EntityXML) appContext.getBean("xml");
-            try{
+            try {
                 Thread.sleep(1000);
-                if(asyncRunner.getResultPB() == null || asyncRunner.getResultGov() == null){
+                if (asyncRunner.getResultPB() == null || asyncRunner.getResultGov() == null) {
                     logger.error("Time out exception. Request time exceeded 1 second.");
                     throw new TimeOutException("Time out exception. Request time exceeded 1 second.");
-                }else
-                {
+                } else {
                     ParserXml.parserXml().parseXML(asyncRunner.getResultPB());
                     ParserByOrgJSON.parserByOrgJSOn().initializeList(asyncRunner.getResultGov());
                     ParserByOrgJSON.parserByOrgJSOn().initListNameCurrency();
@@ -66,26 +65,25 @@ public class ControllerAPI {
                     entityXML.setName(name);
                     entityXML.setCurrencyPBRate(ParserXml.parserXml().currentRate(name));
                     entityXML.setCurrencyGovRate(ParserByOrgJSON.parserByOrgJSOn().currentRate(name));
-                    if(date.equals(formatter.format(calendar.getTime())) && asyncRunner.getResultMono()!=null){
+                    if (date.equals(formatter.format(calendar.getTime())) && asyncRunner.getResultMono() != null) {
                         ParserByJackson.parserByJackson().parseJSON(asyncRunner.getResultMono());
                         entityXML.setCurrensyMonoRate(ParserByJackson.parserByJackson().currentRate(name));
                     }
                 }
-            }catch (InterruptedException | TimeOutException e){
+            } catch (InterruptedException | TimeOutException e) {
                 logger.error(e);
             }
-            writer.writeData(date,name,entityXML);
-            responseWithFile(name, date, response);
-        }else {
+            return entityXML;
+        } else if (type.equals("json")) {
             EntityJSON entityJSON = (EntityJSON) appContext.getBean("json");
-            try{
+            try {
                 Thread.sleep(1000);
-                if(asyncRunner.getResultPB() == null
+                if (asyncRunner.getResultPB() == null
                         || asyncRunner.getResultGov() == null
-                        || asyncRunner.getResultMono() == null){
+                        || asyncRunner.getResultMono() == null) {
                     logger.error("Time out exception. Request time exceeded 1 second.");
                     throw new TimeOutException("Time out exception. Request time exceeded 1 second.");
-                }else {
+                } else {
                     ParserByOrgJSON.parserByOrgJSOn().initializeList(asyncRunner.getResultGov());
                     ParserByOrgJSON.parserByOrgJSOn().initListNameCurrency();
                     entityJSON.setName(name);
@@ -96,12 +94,37 @@ public class ControllerAPI {
                         entityJSON.setCurrensyMonoRate(ParserByJackson.parserByJackson().currentRate(name));
                     }
                 }
-            }catch (InterruptedException | TimeOutException e){
+            } catch (InterruptedException | TimeOutException e) {
                 logger.error(e);
             }
-            writer.writeData(date,name,entityJSON);
+            return entityJSON;
+        } else {
+            EntityJSON entityJSON = (EntityJSON) appContext.getBean("json");
+            try {
+                Thread.sleep(1000);
+                if (asyncRunner.getResultPB() == null
+                        || asyncRunner.getResultGov() == null
+                        || asyncRunner.getResultMono() == null) {
+                    logger.error("Time out exception. Request time exceeded 1 second.");
+                    throw new TimeOutException("Time out exception. Request time exceeded 1 second.");
+                } else {
+                    ParserByOrgJSON.parserByOrgJSOn().initializeList(asyncRunner.getResultGov());
+                    ParserByOrgJSON.parserByOrgJSOn().initListNameCurrency();
+                    entityJSON.setName(name);
+                    entityJSON.setCurrencyGovRate(ParserByOrgJSON.parserByOrgJSOn().currentRate(name));
+                    entityJSON.setCurrencyPBRate(ParserXml.parserXml().currentRate(name));
+                    if (date.equals(formatter.format(calendar.getTime()))) {
+                        ParserByJackson.parserByJackson().parseJSON(asyncRunner.getResultMono());
+                        entityJSON.setCurrensyMonoRate(ParserByJackson.parserByJackson().currentRate(name));
+                    }
+                }
+            } catch (InterruptedException | TimeOutException e) {
+                logger.error(e);
+            }
+            writer.writeData(date, name, entityJSON);
             responseWithFile(name, date, response);
         }
+        return null;
     }
     private void responseWithFile(String name, String date, HttpServletResponse response){
         response.setContentType(

@@ -1,6 +1,7 @@
 package com.example.lab2.model.pullers;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +15,12 @@ public class AsyncRunner {
     private String resultPB;
     private String resultMono;
 
-    private DataPuller dataPullerPB = new DataPullerPB();
-    private DataPuller dataPullerMono = new DataPullerMono();
-    private DataPuller dataPullerGov = new DataPullerGov();
+    @Autowired
+    private DataPuller dataPullerPB;
+    @Autowired
+    private DataPuller dataPullerMono;
+    @Autowired
+    private DataPuller dataPullerGov;
 
     private final static Logger logger = Logger.getLogger(AsyncRunner.class);
 
