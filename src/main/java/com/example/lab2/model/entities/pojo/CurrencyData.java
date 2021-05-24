@@ -1,34 +1,25 @@
 package com.example.lab2.model.entities.pojo;
 
 import com.example.lab2.model.entities.interfaces.Injection;
-import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
-import javax.xml.bind.JAXB;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.io.StringWriter;
-
 @Component
-@XmlRootElement(name="currency")
-public class EntityXML extends Base implements Injection {
-    private final static Logger logger = Logger.getLogger(EntityXML.class);
+public class CurrencyData implements Injection {
 
-    @XmlElement
+    private String name;
+    private String currencyPBRate = "Not reachable";
+    private String currensyMonoRate = "Not reachable";
+    private String currencyGovRate = "Not reachable";
+
     public void setName(String name) {
         this.name = name;
     }
     public String getName() {
         return name;
     }
-
     public String getCurrencyPBRate() {
         return currencyPBRate;
     }
-    @XmlElement
     public void setCurrencyPBRate(String currencyPBRate) {
         this.currencyPBRate = currencyPBRate;
     }
@@ -36,7 +27,6 @@ public class EntityXML extends Base implements Injection {
     public String getCurrensyMonoRate() {
         return currensyMonoRate;
     }
-    @XmlElement
     public void setCurrensyMonoRate(String currensyMonoRate) {
         this.currensyMonoRate = currensyMonoRate;
     }
@@ -44,22 +34,18 @@ public class EntityXML extends Base implements Injection {
     public String getCurrencyGovRate() {
         return currencyGovRate;
     }
-    @XmlElement
     public void setCurrencyGovRate(String currencyGovRate) {
         this.currencyGovRate = currencyGovRate;
     }
 
     @Override
-    public String toString() {
-        StringWriter sw = new StringWriter();
-        try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(EntityXML.class);
-            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-            jaxbMarshaller.marshal(this, sw);
-        } catch (JAXBException e) {
-            logger.error(e);
-        }
-        return sw.toString();
+    public java.lang.String toString() {
+        return "Entity{" +
+                ", name='" + name + '\'' +
+                ", currencyPBRate='" + currencyPBRate + '\'' +
+                ", currensyMonoRate='" + currensyMonoRate + '\'' +
+                ", currencyGovRate='" + currencyGovRate + '\'' +
+                '}';
     }
 
     @Override
@@ -76,13 +62,13 @@ public class EntityXML extends Base implements Injection {
     public boolean equals(Object obj) {
         if(obj == this) return true;
         if(obj == null) return false;
-        if(!(obj instanceof EntityXML)) return false;
+        if(!(obj instanceof CurrencyData)) return false;
 
-        EntityXML entityXML = (EntityXML)obj;
-        if(this.name == entityXML.name
-                && this.currencyGovRate == entityXML.currencyGovRate
-                && this.currencyPBRate == entityXML.currencyPBRate
-                && this.currensyMonoRate == entityXML.currensyMonoRate) return true;
+        CurrencyData currencyData = (CurrencyData)obj;
+        if(this.name == currencyData.name
+                && this.currencyGovRate == currencyData.currencyGovRate
+                && this.currencyPBRate == currencyData.currencyPBRate
+                && this.currensyMonoRate == currencyData.currensyMonoRate) return true;
         else return false;
     }
 }

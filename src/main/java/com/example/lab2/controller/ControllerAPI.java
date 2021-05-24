@@ -1,9 +1,9 @@
 package com.example.lab2.controller;
 
-import com.example.lab2.model.entities.pojo.EntityJSON;
+import com.example.lab2.model.converters.ConvertToXML;
+import com.example.lab2.model.entities.pojo.CurrencyData;
 import com.example.lab2.model.parsers.ParserByJackson;
 import com.example.lab2.model.parsers.ParserByOrgJSON;
-import com.example.lab2.model.entities.pojo.EntityXML;
 import com.example.lab2.model.parsers.ParserXml;
 import com.example.lab2.model.exception.TimeOutException;
 import com.example.lab2.model.pullers.AsyncRunner;
@@ -35,11 +35,13 @@ public class ControllerAPI {
     private Writer writer;
     @Autowired
     private AsyncRunner asyncRunner;
+    @Autowired
+    private ConvertToXML convert;
+    @Autowired
+    private CurrencyData currencyData;
 
     private Calendar calendar = Calendar.getInstance();
     private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-
-    private ApplicationContext appContext  = new ClassPathXmlApplicationContext("beans.xml");
 
     private final static Logger logger = Logger.getLogger(ControllerAPI.class);
 
@@ -51,7 +53,6 @@ public class ControllerAPI {
         type = type.toLowerCase(Locale.ROOT);
         asyncRunner.executeAll(date);
         if (type.equals("xml")) {
-            EntityXML entityXML = (EntityXML) appContext.getBean("xml");
             try {
                 Thread.sleep(1000);
                 if (asyncRunner.getResultPB() == null || asyncRunner.getResultGov() == null) {
@@ -62,20 +63,19 @@ public class ControllerAPI {
                     ParserByOrgJSON.parserByOrgJSOn().initializeList(asyncRunner.getResultGov());
                     ParserByOrgJSON.parserByOrgJSOn().initListNameCurrency();
 
-                    entityXML.setName(name);
-                    entityXML.setCurrencyPBRate(ParserXml.parserXml().currentRate(name));
-                    entityXML.setCurrencyGovRate(ParserByOrgJSON.parserByOrgJSOn().currentRate(name));
+                    currencyData.setName(name);
+                    currencyData.setCurrencyPBRate(ParserXml.parserXml().currentRate(name));
+                    currencyData.setCurrencyGovRate(ParserByOrgJSON.parserByOrgJSOn().currentRate(name));
                     if (date.equals(formatter.format(calendar.getTime())) && asyncRunner.getResultMono() != null) {
                         ParserByJackson.parserByJackson().parseJSON(asyncRunner.getResultMono());
-                        entityXML.setCurrensyMonoRate(ParserByJackson.parserByJackson().currentRate(name));
+                        currencyData.setCurrensyMonoRate(ParserByJackson.parserByJackson().currentRate(name));
                     }
                 }
             } catch (InterruptedException | TimeOutException e) {
                 logger.error(e);
             }
-            return entityXML;
+            return convert.convert(currencyData);
         } else if (type.equals("json")) {
-            EntityJSON entityJSON = (EntityJSON) appContext.getBean("json");
             try {
                 Thread.sleep(1000);
                 if (asyncRunner.getResultPB() == null
@@ -86,20 +86,19 @@ public class ControllerAPI {
                 } else {
                     ParserByOrgJSON.parserByOrgJSOn().initializeList(asyncRunner.getResultGov());
                     ParserByOrgJSON.parserByOrgJSOn().initListNameCurrency();
-                    entityJSON.setName(name);
-                    entityJSON.setCurrencyGovRate(ParserByOrgJSON.parserByOrgJSOn().currentRate(name));
-                    entityJSON.setCurrencyPBRate(ParserXml.parserXml().currentRate(name));
+                    currencyData.setName(name);
+                    currencyData.setCurrencyGovRate(ParserByOrgJSON.parserByOrgJSOn().currentRate(name));
+                    currencyData.setCurrencyPBRate(ParserXml.parserXml().currentRate(name));
                     if (date.equals(formatter.format(calendar.getTime()))) {
                         ParserByJackson.parserByJackson().parseJSON(asyncRunner.getResultMono());
-                        entityJSON.setCurrensyMonoRate(ParserByJackson.parserByJackson().currentRate(name));
+                        currencyData.setCurrensyMonoRate(ParserByJackson.parserByJackson().currentRate(name));
                     }
                 }
             } catch (InterruptedException | TimeOutException e) {
                 logger.error(e);
             }
-            return entityJSON;
+            return currencyData;
         } else {
-            EntityJSON entityJSON = (EntityJSON) appContext.getBean("json");
             try {
                 Thread.sleep(1000);
                 if (asyncRunner.getResultPB() == null
@@ -110,18 +109,18 @@ public class ControllerAPI {
                 } else {
                     ParserByOrgJSON.parserByOrgJSOn().initializeList(asyncRunner.getResultGov());
                     ParserByOrgJSON.parserByOrgJSOn().initListNameCurrency();
-                    entityJSON.setName(name);
-                    entityJSON.setCurrencyGovRate(ParserByOrgJSON.parserByOrgJSOn().currentRate(name));
-                    entityJSON.setCurrencyPBRate(ParserXml.parserXml().currentRate(name));
+                    currencyData.setName(name);
+                    currencyData.setCurrencyGovRate(ParserByOrgJSON.parserByOrgJSOn().currentRate(name));
+                    currencyData.setCurrencyPBRate(ParserXml.parserXml().currentRate(name));
                     if (date.equals(formatter.format(calendar.getTime()))) {
                         ParserByJackson.parserByJackson().parseJSON(asyncRunner.getResultMono());
-                        entityJSON.setCurrensyMonoRate(ParserByJackson.parserByJackson().currentRate(name));
+                        currencyData.setCurrensyMonoRate(ParserByJackson.parserByJackson().currentRate(name));
                     }
                 }
             } catch (InterruptedException | TimeOutException e) {
                 logger.error(e);
             }
-            writer.writeData(date, name, entityJSON);
+            writer.writeData(date, name, currencyData);
             responseWithFile(name, date, response);
         }
         return null;

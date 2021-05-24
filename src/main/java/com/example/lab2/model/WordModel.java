@@ -1,15 +1,15 @@
 package com.example.lab2.model;
 
+import com.example.lab2.model.entities.pojo.CurrencyData;
 import org.apache.log4j.Logger;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
 
 @Service
 public class WordModel {
+
     private FileOutputStream fos;
     private XWPFDocument document = new XWPFDocument();
 
@@ -24,9 +24,25 @@ public class WordModel {
         }
     }
     public void generateFile(Object text){
-        XWPFParagraph paragraph = document.createParagraph();
-        XWPFRun run = paragraph.createRun();
-        run.setText(text.toString());
+        CurrencyData data = (CurrencyData) text;
+        XWPFTable table = document.createTable();
+
+        XWPFTableRow tableRowOne = table.getRow(0);
+        tableRowOne.getCell(0).setText("Name");
+        tableRowOne.addNewTableCell().setText(data.getName());
+
+        XWPFTableRow tableRowTwo = table.createRow();
+        tableRowTwo.getCell(0).setText("Privat");
+        tableRowTwo.addNewTableCell().setText(data.getCurrencyPBRate());
+
+        XWPFTableRow tableRowThree = table.createRow();
+        tableRowThree.getCell(0).setText("Government");
+        tableRowThree.addNewTableCell().setText(data.getCurrencyGovRate());
+
+        XWPFTableRow tableRowFour = table.createRow();
+        tableRowFour.getCell(0).setText("Monobank");
+        tableRowFour.addNewTableCell().setText(data.getCurrensyMonoRate());
+
         try {
             document.write(fos);
             fos.close();
