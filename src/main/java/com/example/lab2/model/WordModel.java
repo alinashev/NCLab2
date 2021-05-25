@@ -2,6 +2,8 @@ package com.example.lab2.model;
 
 import com.example.lab2.model.entities.pojo.CurrencyData;
 import org.apache.log4j.Logger;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.stereotype.Service;
 
@@ -11,37 +13,38 @@ import java.io.*;
 public class WordModel {
 
     private FileOutputStream fos;
-    private XWPFDocument document = new XWPFDocument();
+    private XWPFDocument document;
 
     private final static Logger logger = Logger.getLogger(WordModel.class);
-
 
     public WordModel(String date,String name){
         try {
             fos = new FileOutputStream( date + "_" + name + ".docx");
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
     }
-    public void generateFile(Object text){
+    public void generateFile(Object text, String date) throws InvalidFormatException, IOException {
+        document = new XWPFDocument(
+                OPCPackage.open("src/main/resources/word_template.docx"));
         CurrencyData data = (CurrencyData) text;
-        XWPFTable table = document.createTable();
+        XWPFTable table = document.getTables().get(0);
 
-        XWPFTableRow tableRowOne = table.getRow(0);
-        tableRowOne.getCell(0).setText("Name");
-        tableRowOne.addNewTableCell().setText(data.getName());
+        XWPFTableRow rowName = table.getRow(0);
+        System.out.println(rowName.getCell(0).getText());
+        rowName.getCell(1).setText(data.getName());
 
-        XWPFTableRow tableRowTwo = table.createRow();
-        tableRowTwo.getCell(0).setText("Privat");
-        tableRowTwo.addNewTableCell().setText(data.getCurrencyPBRate());
+        XWPFTableRow rowDate = table.getRow(1);
+        rowDate.getCell(1).setText(date);
 
-        XWPFTableRow tableRowThree = table.createRow();
-        tableRowThree.getCell(0).setText("Government");
-        tableRowThree.addNewTableCell().setText(data.getCurrencyGovRate());
+        XWPFTableRow rowPrivat = table.getRow(2);
+        rowPrivat.getCell(1).setText(data.getCurrencyPBRate());
 
-        XWPFTableRow tableRowFour = table.createRow();
-        tableRowFour.getCell(0).setText("Monobank");
-        tableRowFour.addNewTableCell().setText(data.getCurrensyMonoRate());
+        XWPFTableRow rowGov = table.getRow(3);
+        rowGov.getCell(1).setText(data.getCurrencyGovRate());
+
+        XWPFTableRow rowMono = table.getRow(4);
+        rowMono.getCell(1).setText(data.getCurrensyMonoRate());
 
         try {
             document.write(fos);
