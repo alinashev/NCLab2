@@ -16,11 +16,11 @@ public class AsyncRunner {
     private String resultMono;
 
     @Autowired
-    private DataPuller dataPullerPB;
+    private DataPullerPB dataPullerPB;
     @Autowired
-    private DataPuller dataPullerMono;
+    private DataPullerMono dataPullerMono;
     @Autowired
-    private DataPuller dataPullerGov;
+    private DataPullerGov dataPullerGov;
 
     private final static Logger logger = Logger.getLogger(AsyncRunner.class);
 

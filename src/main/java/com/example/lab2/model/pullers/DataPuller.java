@@ -18,6 +18,4 @@ public abstract class DataPuller {
     protected String inputLine;
     protected StringBuilder sb;
     protected DateConverter dateConverter = new DateConverter();
-
-    public abstract String getData(String date);
 }

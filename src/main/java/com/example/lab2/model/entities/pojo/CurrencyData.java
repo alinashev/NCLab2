@@ -1,10 +1,10 @@
 package com.example.lab2.model.entities.pojo;
 
-import com.example.lab2.model.entities.interfaces.Injection;
+import com.example.lab2.interfaces.Injection;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CurrencyData implements Injection {
+public class CurrencyData {
 
     private String name;
     private String currencyPBRate = "Not reachable";

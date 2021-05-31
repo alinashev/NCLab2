@@ -1,5 +1,6 @@
 package com.example.lab2.model.pullers;
 
+import com.example.lab2.interfaces.Injection;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +10,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 @Service
-public class DataPullerMono extends DataPuller {
+public class DataPullerMono extends DataPuller implements Injection {
 
     private final static Logger logger = Logger.getLogger(DataPullerMono.class);
 
