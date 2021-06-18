@@ -1,5 +1,6 @@
 package com.example.lab2.model.parsers;
 
+import com.example.lab2.interfaces.InjParser;
 import org.json.JSONArray;
 import org.springframework.stereotype.Service;
 
@@ -7,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ParserByOrgJSON extends BaseParser {
+public class ParserByOrgJSON implements InjParser {
     private static ParserByOrgJSON parserByOrgJSON;
     private JSONArray array;
     private List<String> listNameCurrency = new ArrayList<>();

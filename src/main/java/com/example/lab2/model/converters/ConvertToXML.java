@@ -8,7 +8,7 @@ import java.beans.XMLEncoder;
 import java.io.ByteArrayOutputStream;
 
 @Service
-public class ConvertToXML implements Converter<CurrencyData,String> {
+public class ConvertToXML implements Converter<CurrencyData, String> {
     @Override
     public String convert(CurrencyData currencyData) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
