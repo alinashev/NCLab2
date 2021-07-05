@@ -1,5 +1,6 @@
 package com.example.lab2.model.parsers;
 
+import com.example.lab2.interfaces.InjParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
@@ -10,7 +11,7 @@ import java.util.Currency;
 import java.util.List;
 
 @Service
-public class ParserByJackson extends BaseParser {
+public class ParserByJackson implements InjParser {
     private static ParserByJackson parserByJackson;
     private ObjectMapper mapper = new ObjectMapper();
     private List<Monobank> list;
@@ -34,13 +35,6 @@ public class ParserByJackson extends BaseParser {
             }
         }
         return "Not exists";
-    }
-
-    public static ParserByJackson parserByJackson(){
-        if(parserByJackson == null){
-            parserByJackson = new ParserByJackson();
-        }
-        return parserByJackson;
     }
 
     private static class Monobank{
@@ -109,5 +103,11 @@ public class ParserByJackson extends BaseParser {
                     ", rateSell='" + rateSell + '\'' +
                     '}';
         }
+    }
+    public static ParserByJackson parserByJackson(){
+        if(parserByJackson == null){
+            parserByJackson = new ParserByJackson();
+        }
+        return parserByJackson;
     }
 }

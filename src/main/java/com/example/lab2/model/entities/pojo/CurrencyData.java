@@ -1,14 +1,15 @@
 package com.example.lab2.model.entities.pojo;
 
-import com.example.lab2.model.entities.interfaces.Injection;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.apache.log4j.Logger;
+import com.example.lab2.interfaces.Injection;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EntityJSON extends Base implements Injection {
+public class CurrencyData {
 
-    private final static Logger logger = Logger.getLogger(EntityJSON.class);
+    private String name;
+    private String currencyPBRate = "Not reachable";
+    private String currensyMonoRate = "Not reachable";
+    private String currencyGovRate = "Not reachable";
 
     public void setName(String name) {
         this.name = name;
@@ -39,8 +40,7 @@ public class EntityJSON extends Base implements Injection {
 
     @Override
     public java.lang.String toString() {
-        return "EntityJSON{" +
-                "mapper=" + mapper +
+        return "Entity{" +
                 ", name='" + name + '\'' +
                 ", currencyPBRate='" + currencyPBRate + '\'' +
                 ", currensyMonoRate='" + currensyMonoRate + '\'' +
@@ -62,13 +62,13 @@ public class EntityJSON extends Base implements Injection {
     public boolean equals(Object obj) {
         if(obj == this) return true;
         if(obj == null) return false;
-        if(!(obj instanceof EntityJSON)) return false;
+        if(!(obj instanceof CurrencyData)) return false;
 
-        EntityJSON entityJSON = (EntityJSON)obj;
-        if(this.name == entityJSON.name
-                && this.currencyGovRate == entityJSON.currencyGovRate
-                && this.currencyPBRate == entityJSON.currencyPBRate
-                && this.currensyMonoRate == entityJSON.currensyMonoRate) return true;
+        CurrencyData currencyData = (CurrencyData)obj;
+        if(this.name == currencyData.name
+                && this.currencyGovRate == currencyData.currencyGovRate
+                && this.currencyPBRate == currencyData.currencyPBRate
+                && this.currensyMonoRate == currencyData.currensyMonoRate) return true;
         else return false;
     }
 }

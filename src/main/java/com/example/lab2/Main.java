@@ -1,6 +1,5 @@
 package com.example.lab2;
 
-import com.example.lab2.controller.ControllerAPI;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +12,11 @@ import java.util.concurrent.Executor;
 
 @SpringBootApplication
 @EnableAsync
-@ComponentScan({"com.example.lab2.controller", "com.example.lab2.model.pullers"})
+@ComponentScan({
+		"com.example.lab2.controller",
+		"com.example.lab2.model.pullers",
+		"com.example.lab2.model.converters",
+		"com.example.lab2.model.entities.pojo"})
 public class Main {
 	public static void main(String[] args) {
 		SpringApplication.run(Main.class, args);
