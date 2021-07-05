@@ -1,5 +1,6 @@
 package com.example.lab2.model.pullers;
 
+import com.example.lab2.interfaces.InjDateConverter;
 import com.example.lab2.interfaces.Injection;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -13,13 +14,19 @@ import java.net.URL;
 public class DataPullerGov extends DataPuller implements Injection {
 
     private final static Logger logger = Logger.getLogger(DataPullerGov.class);
+    private final InjDateConverter injDateConverter;
+
+    public DataPullerGov(InjDateConverter injDateConverter) {
+        this.injDateConverter = injDateConverter;
+    }
+
 
     @Override
     public String getData(String date) {
         sb = new StringBuilder();
         try {
             url = new URL("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date="
-                    + dateConverter.convertForGov(date) + "&amp;json");
+                    + injDateConverter.convertForGov(date) + "&amp;json");
             yc = url.openConnection();
             in = new BufferedReader(
                     new InputStreamReader(

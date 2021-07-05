@@ -1,5 +1,6 @@
 package com.example.lab2.controller;
 
+import com.example.lab2.interfaces.InjAsyncRunner;
 import com.example.lab2.model.converters.ConvertToXML;
 import com.example.lab2.model.entities.pojo.CurrencyData;
 import com.example.lab2.model.parsers.ParserByJackson;
@@ -10,8 +11,6 @@ import com.example.lab2.model.pullers.AsyncRunner;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,16 +33,21 @@ public class ControllerAPI {
     @Autowired
     private Writer writer;
     @Autowired
-    private AsyncRunner asyncRunner;
-    @Autowired
     private ConvertToXML convert;
     @Autowired
     private CurrencyData currencyData;
 
+    
+    private final InjAsyncRunner injAsyncRunner;
+    
     private Calendar calendar = Calendar.getInstance();
     private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
     private final static Logger logger = Logger.getLogger(ControllerAPI.class);
+
+    public ControllerAPI(InjAsyncRunner injAsyncRunner) {
+        this.injAsyncRunner = injAsyncRunner;
+    }
 
     @GetMapping("/api")
     public @ResponseBody Object getData(@RequestParam(value = "currency", defaultValue = "USD") String name,
@@ -51,23 +55,23 @@ public class ControllerAPI {
                                         @RequestParam(value = "date", defaultValue = "") String date,
                                         HttpServletResponse response) {
         type = type.toLowerCase(Locale.ROOT);
-        asyncRunner.executeAll(date);
+        injAsyncRunner.executeAll(date);
         if (type.equals("xml")) {
             try {
                 Thread.sleep(1000);
-                if (asyncRunner.getResultPB() == null || asyncRunner.getResultGov() == null) {
+                if (injAsyncRunner.getResultPB() == null || injAsyncRunner.getResultGov() == null) {
                     logger.error("Time out exception. Request time exceeded 1 second.");
                     throw new TimeOutException("Time out exception. Request time exceeded 1 second.");
                 } else {
-                    ParserXml.parserXml().parseXML(asyncRunner.getResultPB());
-                    ParserByOrgJSON.parserByOrgJSOn().initializeList(asyncRunner.getResultGov());
+                    ParserXml.parserXml().parseXML(injAsyncRunner.getResultPB());
+                    ParserByOrgJSON.parserByOrgJSOn().initializeList(injAsyncRunner.getResultGov());
                     ParserByOrgJSON.parserByOrgJSOn().initListNameCurrency();
 
                     currencyData.setName(name);
                     currencyData.setCurrencyPBRate(ParserXml.parserXml().currentRate(name));
                     currencyData.setCurrencyGovRate(ParserByOrgJSON.parserByOrgJSOn().currentRate(name));
-                    if (date.equals(formatter.format(calendar.getTime())) && asyncRunner.getResultMono() != null) {
-                        ParserByJackson.parserByJackson().parseJSON(asyncRunner.getResultMono());
+                    if (date.equals(formatter.format(calendar.getTime())) && injAsyncRunner.getResultMono() != null) {
+                        ParserByJackson.parserByJackson().parseJSON(injAsyncRunner.getResultMono());
                         currencyData.setCurrensyMonoRate(ParserByJackson.parserByJackson().currentRate(name));
                     }
                 }
@@ -78,19 +82,19 @@ public class ControllerAPI {
         } else if (type.equals("json")) {
             try {
                 Thread.sleep(1000);
-                if (asyncRunner.getResultPB() == null
-                        || asyncRunner.getResultGov() == null
-                        || asyncRunner.getResultMono() == null) {
+                if (injAsyncRunner.getResultPB() == null
+                        || injAsyncRunner.getResultGov() == null
+                        || injAsyncRunner.getResultMono() == null) {
                     logger.error("Time out exception. Request time exceeded 1 second.");
                     throw new TimeOutException("Time out exception. Request time exceeded 1 second.");
                 } else {
-                    ParserByOrgJSON.parserByOrgJSOn().initializeList(asyncRunner.getResultGov());
+                    ParserByOrgJSON.parserByOrgJSOn().initializeList(injAsyncRunner.getResultGov());
                     ParserByOrgJSON.parserByOrgJSOn().initListNameCurrency();
                     currencyData.setName(name);
                     currencyData.setCurrencyGovRate(ParserByOrgJSON.parserByOrgJSOn().currentRate(name));
                     currencyData.setCurrencyPBRate(ParserXml.parserXml().currentRate(name));
                     if (date.equals(formatter.format(calendar.getTime()))) {
-                        ParserByJackson.parserByJackson().parseJSON(asyncRunner.getResultMono());
+                        ParserByJackson.parserByJackson().parseJSON(injAsyncRunner.getResultMono());
                         currencyData.setCurrensyMonoRate(ParserByJackson.parserByJackson().currentRate(name));
                     }
                 }
@@ -101,19 +105,19 @@ public class ControllerAPI {
         } else {
             try {
                 Thread.sleep(1000);
-                if (asyncRunner.getResultPB() == null
-                        || asyncRunner.getResultGov() == null
-                        || asyncRunner.getResultMono() == null) {
+                if (injAsyncRunner.getResultPB() == null
+                        || injAsyncRunner.getResultGov() == null
+                        || injAsyncRunner.getResultMono() == null) {
                     logger.error("Time out exception. Request time exceeded 1 second.");
                     throw new TimeOutException("Time out exception. Request time exceeded 1 second.");
                 } else {
-                    ParserByOrgJSON.parserByOrgJSOn().initializeList(asyncRunner.getResultGov());
+                    ParserByOrgJSON.parserByOrgJSOn().initializeList(injAsyncRunner.getResultGov());
                     ParserByOrgJSON.parserByOrgJSOn().initListNameCurrency();
                     currencyData.setName(name);
                     currencyData.setCurrencyGovRate(ParserByOrgJSON.parserByOrgJSOn().currentRate(name));
                     currencyData.setCurrencyPBRate(ParserXml.parserXml().currentRate(name));
                     if (date.equals(formatter.format(calendar.getTime()))) {
-                        ParserByJackson.parserByJackson().parseJSON(asyncRunner.getResultMono());
+                        ParserByJackson.parserByJackson().parseJSON(injAsyncRunner.getResultMono());
                         currencyData.setCurrensyMonoRate(ParserByJackson.parserByJackson().currentRate(name));
                     }
                 }
